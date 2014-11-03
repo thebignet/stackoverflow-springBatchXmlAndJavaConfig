@@ -17,18 +17,22 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.partition.support.Partitioner;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.batch.item.ExecutionContext;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+
+import com.stackoverflow.question.springBatchXmlAndJavaConfig.chunk.MyReader;
 
 @Configuration
 @ImportResource("job.xml")
@@ -70,5 +74,11 @@ public class MyConfiguration {
     EmbeddedDatabaseBuilder embeddedDatabaseBuilder = new EmbeddedDatabaseBuilder();
     return embeddedDatabaseBuilder.addScript("classpath:org/springframework/batch/core/schema-drop-hsqldb.sql")
         .addScript("classpath:org/springframework/batch/core/schema-hsqldb.sql").setType(EmbeddedDatabaseType.HSQL).build();
+  }
+
+  @Bean
+  @JobScope
+  public MyReader myReader(@Value("#{jobParameters['inputFilePath']}") String inputFilePath) {
+    return new MyReader(inputFilePath);
   }
 }

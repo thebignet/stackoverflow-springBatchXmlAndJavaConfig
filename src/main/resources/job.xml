@@ -25,8 +25,4 @@
         </step>
     </job>
 
-    <beans:bean id="myReader" scope="job" class="com.stackoverflow.question.springBatchXmlAndJavaConfig.chunk.MyReader">
-        <beans:constructor-arg value="#{jobParameters['inputFilePath']}"/>
-    </beans:bean>
-
 </beans:beans>
