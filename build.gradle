@@ -13,7 +13,7 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'spring-boot' 
+apply plugin: 'spring-boot'
 
 jar {
     baseName = 'springBatchXmlAndJavaConfig'
@@ -29,14 +29,14 @@ repositories {
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-batch")
-    compile("org.springframework.batch:spring-batch-core")
+    compile("commons-io:commons-io:2.4")
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 
 eclipse {
     classpath {
-         containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
-         containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7'
+        containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+        containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7'
     }
 }
 

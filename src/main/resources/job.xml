@@ -1,0 +1,32 @@
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns="http://www.springframework.org/schema/batch"
+             xsi:schemaLocation="http://www.springframework.org/schema/batch
+		http://www.springframework.org/schema/batch/spring-batch.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <job id="myJob">
+        <step id="myPartitionStep">
+            <partition partitioner="filePartitioner">
+                <step>
+                    <job ref="myInnerJob" job-parameters-extractor="jobStepParametersExtractor"/>
+                </step>
+            </partition>
+        </step>
+    </job>
+
+    <job id="myInnerJob">
+        <step id="myChunkStep">
+            <tasklet>
+                <chunk commit-interval="5" reader="myReader" writer="myWriter"/>
+            </tasklet>
+        </step>
+    </job>
+
+    <beans:bean id="myReader" scope="job" class="com.stackoverflow.question.springBatchXmlAndJavaConfig.chunk.MyReader">
+        <beans:constructor-arg value="#{jobParameters['inputFilePath']}"/>
+    </beans:bean>
+
+</beans:beans>
